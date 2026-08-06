@@ -1,7 +1,54 @@
+import 'package:expense_iq/core/constants/supabase_config.dart';
+import 'package:expense_iq/core/router/app_router.dart';
+import 'package:expense_iq/core/theme/app_theme.dart';
+import 'package:expense_iq/features/authentication/data/repositories/auth_repository_impl.dart';
+import 'package:expense_iq/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:expense_iq/features/authentication/presentation/providers/auth_provider.dart';
+import 'package:expense_iq/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:expense_iq/features/profile/domain/repositories/profile_repository.dart';
+import 'package:expense_iq/features/profile/presentation/providers/profile_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: SupabaseConfig.url,
+    publishableKey: SupabaseConfig.publishableKey,
+  );
+
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<AuthRepository>(
+          create: (_) => AuthRepositoryImpl(
+            supabase: Supabase.instance.client,
+          )
+        ),
+
+        ChangeNotifierProvider(
+          create: (context) => AuthProvider(
+            authRepository: context.read<AuthRepository>(),
+          )
+        ),
+
+        Provider<ProfileRepository>(
+          create: (_) => ProfileRepositoryImpl(
+            supabase: Supabase.instance.client,
+          ),
+        ),
+
+        ChangeNotifierProvider(
+          create: (context) => ProfileProvider(
+            context.read<ProfileRepository>(),
+          ),
+        ),
+      ],
+      child: const MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -10,27 +57,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return MaterialApp.router(
+      title: 'ExpenseIQ',
+      theme: AppTheme.lightTheme,
+      debugShowCheckedModeBanner: false,
+      routerConfig: appRouter,
     );
   }
 }
