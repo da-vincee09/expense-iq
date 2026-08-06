@@ -5,8 +5,6 @@ import 'package:expense_iq/features/profile/presentation/screens/edit_profile_sc
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 

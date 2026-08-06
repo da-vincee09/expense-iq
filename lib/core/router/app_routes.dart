@@ -9,4 +9,5 @@ class AppRoutes {
 
   static const addTransaction = '/add-transaction';
   static const editTransaction = '/edit-transaction';
+  static const transactionHistory = '/transaction-history';
 }

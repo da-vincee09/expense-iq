@@ -1,9 +1,13 @@
+import 'package:expense_iq/core/enums/transaction_type.dart';
 import 'package:expense_iq/core/router/app_routes.dart';
 import 'package:expense_iq/features/authentication/presentation/screens/login_screen.dart';
 import 'package:expense_iq/features/authentication/presentation/screens/register_screen.dart';
 import 'package:expense_iq/features/authentication/presentation/screens/splash_screen.dart';
 import 'package:expense_iq/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:expense_iq/features/profile/presentation/screens/profile_screen.dart';
+import 'package:expense_iq/features/transactions/data/models/transaction_model.dart';
+import 'package:expense_iq/features/transactions/presentation/screens/add_transcation_screen.dart';
+import 'package:expense_iq/features/transactions/presentation/screens/transaction_history_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -40,6 +44,31 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.profile,
       builder: (context, state) => const ProfileScreen(),
+    ),
+
+   GoRoute(
+      path: AppRoutes.addTransaction,
+      builder: (context, state) {
+
+        final extra = state.extra;
+
+        if (extra is TransactionModel) {
+          return AddTransactionScreen(
+            type: extra.type,
+            transaction: extra,
+          );
+        }
+
+        return AddTransactionScreen(
+          type: extra as TransactionType,
+        );
+      },
+    ),
+
+    GoRoute(
+      path: AppRoutes.transactionHistory,
+      builder: (context, state) =>
+          const TransactionHistoryScreen(),
     ),
   ],
 );
