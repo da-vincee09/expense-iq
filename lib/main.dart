@@ -4,6 +4,9 @@ import 'package:expense_iq/core/theme/app_theme.dart';
 import 'package:expense_iq/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:expense_iq/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:expense_iq/features/authentication/presentation/providers/auth_provider.dart';
+import 'package:expense_iq/features/category/data/repositories/category_repository_impl.dart';
+import 'package:expense_iq/features/category/domain/repositories/category_repository.dart';
+import 'package:expense_iq/features/category/presentation/providers/category_provider.dart';
 import 'package:expense_iq/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:expense_iq/features/profile/domain/repositories/profile_repository.dart';
 import 'package:expense_iq/features/profile/presentation/providers/profile_provider.dart';
@@ -58,6 +61,18 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (context) => TransactionProvider(
             context.read<TransactionRepository>(),
+          ),
+        ),
+
+        Provider<CategoryRepository>(
+          create: (_) => CategoryRepositoryImpl(
+            supabase: Supabase.instance.client,
+          ),
+        ),
+
+        ChangeNotifierProvider(
+          create: (context) => CategoryProvider(
+            context.read<CategoryRepository>(),
           ),
         ),
       ],

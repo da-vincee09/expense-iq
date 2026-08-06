@@ -1,8 +1,7 @@
 // ignore_for_file: avoid_print
-
-import 'package:expense_iq/core/constants/app_categories.dart';
 import 'package:expense_iq/core/constants/app_strings.dart';
 import 'package:expense_iq/core/enums/transaction_type.dart';
+import 'package:expense_iq/features/category/presentation/providers/category_provider.dart';
 import 'package:expense_iq/features/transactions/data/models/transaction_model.dart';
 import 'package:expense_iq/features/transactions/presentation/providers/transaction_provider.dart';
 import 'package:expense_iq/shared/extensions/snackbar_extension.dart';
@@ -32,7 +31,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   final _noteController = TextEditingController();
 
   DateTime _selectedDate = DateTime.now();
-  late String _selectedCategory;
+ String _selectedCategory = '';
 
   bool get isEditing => widget.transaction != null;
 
@@ -48,18 +47,19 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   void initState() {
     super.initState();
 
+    Future.microtask(() {
+      // ignore: use_build_context_synchronously
+      context.read<CategoryProvider>().loadCategories();
+    });
+
     if (isEditing) {
       final transaction = widget.transaction!;
+
       _titleController.text = transaction.title;
       _amountController.text = transaction.amount.toString();
       _selectedCategory = transaction.category;
       _selectedDate = transaction.date;
       _noteController.text = transaction.note ?? '';
-    } else {
-      _selectedCategory =
-          widget.type == TransactionType.expense
-              ? AppCategories.expense.first
-              : AppCategories.income.first;
     }
   }
 
@@ -153,6 +153,43 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final categoryProvider = context.watch<CategoryProvider>();
+
+    final categories = categoryProvider.categoriesByType(
+      widget.type,
+    );
+
+    if (categoryProvider.isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (categories.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.type == TransactionType.expense
+                ? 'Add Expense'
+                : 'Add Income',
+          ),
+        ),
+        body: const Center(
+          child: Text(
+            'No categories found.\nPlease create a category first.',
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    if (!isEditing && _selectedCategory.isEmpty && categories.isNotEmpty) {
+      _selectedCategory = categories.first.name;
+    }
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -215,20 +252,16 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               DropdownButtonFormField<String>(
                 initialValue: _selectedCategory,
                 decoration: const InputDecoration(
-                  labelText: AppStrings.category,
-                  prefixIcon: Icon(Icons.category_outlined),
+                  labelText: 'Category',
                 ),
-                items: (widget.type == TransactionType.expense
-                        ? AppCategories.expense
-                        : AppCategories.income)
-                    .map((category) {
-                  return DropdownMenuItem(
-                    value: category,
-                    child: Text(category),
+                items: categories.map((category) {
+                  return DropdownMenuItem<String>(
+                    value: category.name,
+                    child: Text(category.name),
                   );
                 }).toList(),
                 onChanged: (value) {
-                  if(value == null) return;
+                  if (value == null) return;
 
                   setState(() {
                     _selectedCategory = value;

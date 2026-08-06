@@ -3,6 +3,7 @@ import 'package:expense_iq/core/router/app_routes.dart';
 import 'package:expense_iq/features/authentication/presentation/screens/login_screen.dart';
 import 'package:expense_iq/features/authentication/presentation/screens/register_screen.dart';
 import 'package:expense_iq/features/authentication/presentation/screens/splash_screen.dart';
+import 'package:expense_iq/features/category/presentation/screens/category_screen.dart';
 import 'package:expense_iq/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:expense_iq/features/profile/presentation/screens/profile_screen.dart';
 import 'package:expense_iq/features/transactions/data/models/transaction_model.dart';
@@ -69,6 +70,11 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.transactionHistory,
       builder: (context, state) =>
           const TransactionHistoryScreen(),
+    ),
+
+    GoRoute(
+      path: AppRoutes.categories,
+      builder: (context, state) => const CategoryScreen(),
     ),
   ],
 );
