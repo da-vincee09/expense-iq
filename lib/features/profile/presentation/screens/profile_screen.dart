@@ -1,8 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:expense_iq/core/router/app_routes.dart';
+import 'package:expense_iq/features/authentication/presentation/providers/auth_provider.dart';
 import 'package:expense_iq/features/profile/presentation/providers/profile_provider.dart';
 import 'package:expense_iq/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -18,7 +21,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
 
     Future.microtask(() {
-      context.read<ProfileProvider>().loadProfile();
+      final provider = context.read<ProfileProvider>();
+
+      if (provider.profile == null) {
+        provider.loadProfile();
+      }
     });
   }
 
@@ -123,23 +130,106 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 32),
 
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const EditProfileScreen(),
+            Card(
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.edit),
+                    title: const Text('Edit Profile'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const EditProfileScreen(),
+                        ),
+                      );
+
+                      if (!mounted) return;
+
+                      context.read<ProfileProvider>().loadProfile();
+                    },
+                  ),
+
+                  const Divider(height: 1),
+
+                  ListTile(
+                    leading: const Icon(Icons.category_outlined),
+                    title: const Text('Manage Categories'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () {
+                     context.push(AppRoutes.categories);
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+
+            const SizedBox(height: 16),
+
+            Card(
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.info_outline),
+                    title: const Text('About'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () {
+                      
+                    },
+                  ),
+
+                  const Divider(height: 1),
+
+                  ListTile(
+                    leading: const Icon(
+                      Icons.logout,
+                      color: Colors.red,
                     ),
-                  );
+                    title: const Text(
+                      'Logout',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.red,
+                    ),
+                    onTap: () async {
+                      final shouldLogout = await showDialog<bool>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Logout'),
+                            content: const Text(
+                              'Are you sure you want to logout?',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, false),
+                                child: const Text('Cancel'),
+                              ),
+                              FilledButton(
+                                onPressed: () => Navigator.pop(context, true),
+                                child: const Text('Logout'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
 
-                  if (!context.mounted) return;
+                      if (shouldLogout != true) return;
 
-                  context.read<ProfileProvider>().loadProfile();
-                },
-                icon: const Icon(Icons.edit),
-                label: const Text('Edit Profile'),
+                      context.read<AuthProvider>().signOut();
+
+                      if (!mounted) return;
+
+                      context.go(AppRoutes.login);
+                    },
+                  ),
+                ],
               ),
             ),
           ],

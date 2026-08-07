@@ -130,12 +130,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("ExpenseIQ"),
-        actions: [
-          IconButton(
-            onPressed: () => context.push(AppRoutes.categories),
-            icon: const Icon(Icons.category),
-          ),
-        ],
       ),
       body: SafeArea(
         child: _buildBody(transactionProvider, profileProvider),
