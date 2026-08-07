@@ -35,7 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   ) {
     return SingleChildScrollView(
       padding: const EdgeInsets.only(
-        bottom: 70,
+        bottom: 100,
       ),
       child: Column(
         children: [
@@ -130,6 +130,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("ExpenseIQ"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.bar_chart),
+            onPressed: () {
+              context.push(AppRoutes.statistics);
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: _buildBody(transactionProvider, profileProvider),

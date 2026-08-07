@@ -41,47 +41,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
     }
 
-    if (provider.errorMessage != null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Profile'),
-        ),
-        body: Center(
-          child: Text(provider.errorMessage!),
-        ),
-      );
-    }
-
-    final profile = provider.profile;
-
-    if (profile == null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Profile'),
-        ),
-        body: const Center(
-          child: Text('Profile not found.'),
-        ),
-      );
-    }
-
+   if (provider.errorMessage != null) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Text(
+            provider.errorMessage!,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
+      ),
+    );
+  }
+
+  final profile = provider.profile;
+
+  if (profile == null) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+      ),
+      body: const Center(
+        child: Text('Profile not found.'),
+      ),
+    );
+  }
+
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Profile'),
+    ),
+    body: SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            CircleAvatar(
-              radius: 50,
-              child: Text(
-                profile.name.isNotEmpty
-                    ? profile.name[0].toUpperCase()
-                    : '?',
-                style: Theme.of(context).textTheme.headlineMedium,
+            GestureDetector(
+              onTap: provider.isLoading
+              ? null
+              : () async {
+                  await context
+                      .read<ProfileProvider>()
+                      .pickAndUploadProfileImage();
+                },
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    CircleAvatar(
+                      radius: 55,
+                      backgroundImage: profile.profileImage != null
+                          ? NetworkImage(profile.profileImage!)
+                          : null,
+                      child: profile.profileImage == null
+                          ? Text(
+                              profile.name.isNotEmpty
+                                  ? profile.name[0].toUpperCase()
+                                  : '?',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium,
+                            )
+                          : null,
+                    ),
+
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.camera_alt,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+
+            if (provider.isLoading)
+              const Padding(
+                padding: EdgeInsets.only(top: 12),
+                child: CircularProgressIndicator(),
+              ),
 
             const SizedBox(height: 24),
 
@@ -172,11 +219,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 children: [
                   ListTile(
-                    leading: const Icon(Icons.info_outline),
-                    title: const Text('About'),
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Settings'),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () {
-                      
+                      context.push(AppRoutes.settings);
                     },
                   ),
 

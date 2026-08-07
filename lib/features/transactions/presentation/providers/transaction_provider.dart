@@ -11,14 +11,68 @@ class TransactionProvider extends ChangeNotifier {
   final List<TransactionModel> _transactions = [];
 
   bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  
   String? _errorMessage;
+  String? get errorMessage => _errorMessage;
+
+  String _searchQuery = '';
+  String get searchQuery => _searchQuery;
+
+  String? _selectedCategoryId;
+  String? get selectedCategoryId => _selectedCategoryId;
+
+  TransactionType? _selectedType;
+  TransactionType? get selectedType => _selectedType;
 
   List<TransactionModel> get transactions =>
       List.unmodifiable(_transactions);
 
-  bool get isLoading => _isLoading;
 
-  String? get errorMessage => _errorMessage;
+  void setSearchQuery(String value) {
+    _searchQuery = value;
+    notifyListeners();
+  }
+
+  List<TransactionModel> get filteredTransactions {
+    Iterable<TransactionModel> filtered = _transactions;
+
+    if (_searchQuery.isNotEmpty) {
+      final query = _searchQuery.toLowerCase();
+
+      filtered = filtered.where(
+        (transaction) =>
+            transaction.title.toLowerCase().contains(query),
+      );
+    }
+
+    if (_selectedType != null) {
+      filtered = filtered.where(
+        (transaction) =>
+            transaction.type == _selectedType,
+      );
+    }
+
+    if (_selectedCategoryId != null) {
+      filtered = filtered.where(
+        (transaction) =>
+            transaction.categoryId == _selectedCategoryId,
+      );
+    }
+
+    return filtered.toList();
+  }
+
+  void setSelectedType(TransactionType? type) {
+    _selectedType = type;
+    _selectedCategoryId = null;
+    notifyListeners();
+  }
+
+  void setSelectedCategory(String? categoryId) {
+    _selectedCategoryId = categoryId;
+    notifyListeners();
+  }
 
   double get totalIncome {
     return _transactions
@@ -56,6 +110,20 @@ class TransactionProvider extends ChangeNotifier {
     return sorted.take(5).toList();
   }
 
+  Map<String, double> get expensesByCategory {
+    final Map<String, double> data = {};
+
+    for (final transaction in _transactions) {
+      if (transaction.type == TransactionType.expense) {
+        final category = transaction.category?.name ?? 'Unknown';
+
+        data[category] = (data[category] ?? 0) + transaction.amount;
+      }
+    }
+
+    return data;
+  }
+
   Future<void> loadTransactions() async {
     _isLoading = true;
     _errorMessage = null;
@@ -63,7 +131,7 @@ class TransactionProvider extends ChangeNotifier {
 
     try {
       final data = await _repository.getTransactions();
-
+      
       _transactions
         ..clear()
         ..addAll(data);

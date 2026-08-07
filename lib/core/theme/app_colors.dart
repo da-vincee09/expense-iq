@@ -5,6 +5,9 @@ class AppColors {
   static const primaryDark = Color(0xFF059669);
   static const primaryLight = Color(0xFFD1FAE5);
 
+  static const darkBackground = Color(0xFF0F172A);
+  static const darkSurface = Color(0xFF1E293B);
+
   static const income = Color(0xFF22C55E);
   static const expense = Color(0xFFEF4444);
 
@@ -16,4 +19,6 @@ class AppColors {
 
   static const textPrimary = Color(0xFF0F172A);
   static const textSecondary = Color(0xFF64748B);
+
+  
 }

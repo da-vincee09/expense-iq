@@ -17,12 +17,27 @@ class TransactionRepositoryImpl implements TransactionRepository{
       throw Exception("User not authenticated.");
     }
 
-    final response = await supabase
-      .from('transactions')
-      .select()
-      .eq('user_id', user.id)
-      .order('date', ascending: false);
-    
+   final response = await supabase
+    .from('transactions')
+    .select('''
+      *,
+      categories (
+        id,
+        user_id,
+        name,
+        type,
+        icon,
+        created_at
+      )
+      ''')
+    .eq('user_id', user.id)
+    .order(
+      'date',
+      ascending: false,
+    );
+
+    print(response);
+  
     return response.map<TransactionModel>(
       (json) => TransactionModel.fromJson(json)
     ).toList();
@@ -42,13 +57,12 @@ class TransactionRepositoryImpl implements TransactionRepository{
         .update({
           'title': transaction.title,
           'amount': transaction.amount,
-          'category': transaction.category,
+          'category_id': transaction.categoryId,
           'type': transaction.type.name,
           'date': transaction.date.toIso8601String(),
           'note': transaction.note,
         })
-        .eq('id', transaction.id)
-        .select();
+        .eq('id', transaction.id);
   }
 
   @override

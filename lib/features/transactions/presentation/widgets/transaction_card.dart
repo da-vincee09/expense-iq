@@ -15,6 +15,7 @@ class TransactionCard extends StatelessWidget {
     required this.transaction,
   });
 
+
   void _showDeleteDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -40,6 +41,7 @@ class TransactionCard extends StatelessWidget {
               ),
             ),
 
+
             TextButton(
               onPressed: () async {
                 Navigator.pop(context);
@@ -62,11 +64,15 @@ class TransactionCard extends StatelessWidget {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     final isExpense = transaction.type == TransactionType.expense;
+    final categoryName = transaction.category?.name ?? 'Unknown';
 
     return InkWell(
+
       onTap: () {
         context.push(
           AppRoutes.addTransaction,
@@ -74,12 +80,17 @@ class TransactionCard extends StatelessWidget {
         );
       },
 
-      child:Card(
+
+      child: Card(
+
         margin: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 6,
         ),
+
+
         child: ListTile(
+
           leading: CircleAvatar(
             child: Icon(
               isExpense
@@ -87,40 +98,72 @@ class TransactionCard extends StatelessWidget {
                   : Icons.arrow_downward,
             ),
           ),
-          title: Text(transaction.title),
-          subtitle: Text(transaction.category),
+
+
+          title: Text(
+            transaction.title,
+          ),
+
+
+          subtitle: Text(
+            categoryName,
+          ),
+
+
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
+
             children: [
 
               Text(
                 '${isExpense ? '-' : '+'}₱${transaction.amount.toStringAsFixed(2)}',
+
                 style: TextStyle(
                   color: isExpense
                       ? AppColors.expense
                       : AppColors.income,
-                  fontWeight: FontWeight.bold,
+
+                  fontWeight:
+                      FontWeight.bold,
                 ),
               ),
 
+
               PopupMenuButton<String>(
+
                 onSelected: (value) {
+
                   if (value == 'delete') {
                     _showDeleteDialog(context);
                   }
+
                 },
 
+
                 itemBuilder: (context) => [
+
                   const PopupMenuItem(
                     value: 'delete',
+
                     child: Row(
                       children: [
-                        Icon(Icons.delete),
-                        SizedBox(width: 8),
-                        Text('Delete'),
+
+                        Icon(
+                          Icons.delete,
+                        ),
+
+                        SizedBox(
+                          width: 8,
+                        ),
+
+                        Text(
+                          'Delete',
+                        ),
+
                       ],
                     ),
                   ),
+
                 ],
               ),
 
@@ -129,8 +172,5 @@ class TransactionCard extends StatelessWidget {
         ),
       ),
     );
-    
-    
-    
   }
 }

@@ -1,6 +1,7 @@
 import 'package:expense_iq/core/constants/supabase_config.dart';
 import 'package:expense_iq/core/router/app_router.dart';
 import 'package:expense_iq/core/theme/app_theme.dart';
+import 'package:expense_iq/core/theme/theme_provider.dart';
 import 'package:expense_iq/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:expense_iq/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:expense_iq/features/authentication/presentation/providers/auth_provider.dart';
@@ -75,6 +76,10 @@ Future<void> main() async {
             context.read<CategoryRepository>(),
           ),
         ),
+
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(),
+        )
       ],
       child: const MyApp(),
     )
@@ -87,11 +92,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+
     return MaterialApp.router(
       title: 'ExpenseIQ',
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeProvider.themeMode,
     );
   }
 }

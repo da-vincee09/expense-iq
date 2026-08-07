@@ -1,5 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:expense_iq/features/category/presentation/providers/category_provider.dart';
 import 'package:expense_iq/features/transactions/presentation/providers/transaction_provider.dart';
 import 'package:expense_iq/features/transactions/presentation/widgets/transaction_card.dart';
+import 'package:expense_iq/features/transactions/presentation/widgets/transaction_category_filter.dart';
+import 'package:expense_iq/features/transactions/presentation/widgets/transaction_filter_chips.dart';
+import 'package:expense_iq/features/transactions/presentation/widgets/transaction_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,10 +24,9 @@ class _TransactionHistoryScreenState
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      // ignore: use_build_context_synchronously
-      context.read<TransactionProvider>()
-          .loadTransactions();
+    Future.microtask(() async {
+      await context.read<TransactionProvider>().loadTransactions();
+      await context.read<CategoryProvider>().loadCategories();
     });
   }
 
@@ -37,32 +42,64 @@ class _TransactionHistoryScreenState
           'Transactions',
         ),
       ),
-
       body: provider.isLoading
+      ? const Center(
+          child: CircularProgressIndicator(),
+        )
+      : provider.transactions.isEmpty
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: Text(
+                'No transactions yet.',
+              ),
             )
+          : provider.filteredTransactions.isEmpty
+              ? Column(
+                  children: const [
+                    TransactionSearchBar(),
+                    SizedBox(height: 8),
 
-          : provider.transactions.isEmpty
-              ? const Center(
-                  child: Text(
-                    'No transactions yet.',
-                  ),
+                    TransactionFilterChips(),
+                    SizedBox(height: 8),
+
+                    TransactionCategoryFilter(),
+                    SizedBox(height: 8),
+
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          'No matching transactions found.',
+                        ),
+                      ),
+                    ),
+                  ],
                 )
+              : Column(
+                  children: [
+                    const TransactionSearchBar(),
+                    const SizedBox(height: 8),
 
-              : ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: provider.transactions.length,
+                    const TransactionFilterChips(),
+                    const SizedBox(height: 8),
 
-                  itemBuilder: (context, index) {
+                    const TransactionCategoryFilter(),
+                    const SizedBox(height: 8),    
 
-                    final transaction =
-                        provider.transactions[index];
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(16),
+                        itemCount:
+                            provider.filteredTransactions.length,
+                        itemBuilder: (context, index) {
+                          final transaction =
+                              provider.filteredTransactions[index];
 
-                    return TransactionCard(
-                      transaction: transaction,
-                    );
-                  },
+                          return TransactionCard(
+                            transaction: transaction,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
     );
   }

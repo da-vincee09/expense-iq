@@ -1,14 +1,16 @@
 import 'package:expense_iq/core/enums/transaction_type.dart';
+import 'package:expense_iq/features/category/data/models/category_model.dart';
 
 class TransactionModel {
   final String id;
   final String userId;
   final String title;
   final double amount;
-  final String category;
+  final String categoryId;
   final TransactionType type;
   final DateTime date;
   final String? note;
+  final CategoryModel? category;
   final DateTime createdAt;
 
   const TransactionModel({
@@ -16,26 +18,43 @@ class TransactionModel {
     required this.userId,
     required this.title,
     required this.amount,
-    required this.category,
+    required this.categoryId,
     required this.type,
     required this.date,
     this.note,
+    this.category,
     required this.createdAt,
   });
 
-  factory TransactionModel.fromJson(Map<String, dynamic> json) {
+  factory TransactionModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
     return TransactionModel(
       id: json['id'].toString(),
       userId: json['user_id'].toString(),
       title: json['title'] ?? '',
       amount: (json['amount'] as num?)?.toDouble() ?? 0,
-      category: json['category'] ?? '',
+      categoryId: json['category_id']?.toString() ?? '',
+
       type: TransactionType.values.firstWhere(
         (e) => e.name == json['type'],
       ),
-      date: DateTime.parse(json['date']),
+
+      date: DateTime.parse(
+        json['date'],
+      ),
+
       note: json['note'],
-      createdAt: DateTime.parse(json['created_at']),
+
+      category: json['categories'] != null
+          ? CategoryModel.fromJson(
+              json['categories'],
+            )
+          : null,
+
+      createdAt: DateTime.parse(
+        json['created_at'],
+      ),
     );
   }
 
@@ -45,7 +64,7 @@ class TransactionModel {
       'user_id': userId,
       'title': title,
       'amount': amount,
-      'category': category,
+      'category_id': categoryId,
       'type': type.name,
       'date': date.toIso8601String(),
       'note': note,
@@ -58,7 +77,7 @@ class TransactionModel {
       'user_id': userId,
       'title': title,
       'amount': amount,
-      'category': category,
+      'category_id': categoryId,
       'type': type.name,
       'date': date.toIso8601String(),
       'note': note,
@@ -70,10 +89,11 @@ class TransactionModel {
     String? userId,
     String? title,
     double? amount,
-    String? category,
+    String? categoryId,
     TransactionType? type,
     DateTime? date,
     String? note,
+    CategoryModel? category,
     DateTime? createdAt,
   }) {
     return TransactionModel(
@@ -81,10 +101,11 @@ class TransactionModel {
       userId: userId ?? this.userId,
       title: title ?? this.title,
       amount: amount ?? this.amount,
-      category: category ?? this.category,
+      categoryId: categoryId ?? this.categoryId,
       type: type ?? this.type,
       date: date ?? this.date,
       note: note ?? this.note,
+      category: category ?? this.category,
       createdAt: createdAt ?? this.createdAt,
     );
   }

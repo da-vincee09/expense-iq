@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'package:expense_iq/core/constants/app_strings.dart';
 import 'package:expense_iq/core/enums/transaction_type.dart';
 import 'package:expense_iq/features/category/presentation/providers/category_provider.dart';
@@ -20,10 +19,13 @@ class AddTransactionScreen extends StatefulWidget {
   });
 
   @override
-  State<AddTransactionScreen> createState() => _AddTransactionScreenState();
+  State<AddTransactionScreen> createState() =>
+      _AddTransactionScreenState();
 }
 
-class _AddTransactionScreenState extends State<AddTransactionScreen> {
+class _AddTransactionScreenState
+    extends State<AddTransactionScreen> {
+
   final _formKey = GlobalKey<FormState>();
 
   final _titleController = TextEditingController();
@@ -31,9 +33,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   final _noteController = TextEditingController();
 
   DateTime _selectedDate = DateTime.now();
- String _selectedCategory = '';
+  String? _selectedCategoryId;
 
   bool get isEditing => widget.transaction != null;
+
 
   @override
   void dispose() {
@@ -42,6 +45,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     _noteController.dispose();
     super.dispose();
   }
+
 
   @override
   void initState() {
@@ -52,49 +56,73 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       context.read<CategoryProvider>().loadCategories();
     });
 
+
     if (isEditing) {
       final transaction = widget.transaction!;
 
       _titleController.text = transaction.title;
-      _amountController.text = transaction.amount.toString();
-      _selectedCategory = transaction.category;
+      _amountController.text =
+          transaction.amount.toString();
+
+      _selectedCategoryId = transaction.categoryId;
+
       _selectedDate = transaction.date;
-      _noteController.text = transaction.note ?? '';
+
+      _noteController.text =
+          transaction.note ?? '';
     }
   }
 
-  Future<void> _selectDate() async{
+
+  Future<void> _selectDate() async {
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: _selectedDate, 
-      firstDate: DateTime(2020), 
+      initialDate: _selectedDate,
+      firstDate: DateTime(2020),
       lastDate: DateTime(2100),
     );
 
-    if(pickedDate != null) {
+    if (pickedDate != null) {
       setState(() {
         _selectedDate = pickedDate;
       });
     }
-  } 
+  }
+
 
   Future<void> _save() async {
+
     if (!_formKey.currentState!.validate()) return;
-    
-    final user = Supabase.instance.client.auth.currentUser;
+
+    if (_selectedCategoryId == null) {
+      context.showError(
+        'Please select a category.',
+      );
+      return;
+    }
+
+
+    final user =
+        Supabase.instance.client.auth.currentUser;
 
     if (user == null) return;
 
+
     try {
-      final provider = context.read<TransactionProvider>();
+
+      final provider =
+          context.read<TransactionProvider>();
+
+
       if (isEditing) {
+
         final updatedTransaction =
             widget.transaction!.copyWith(
               title: _titleController.text.trim(),
               amount: double.parse(
                 _amountController.text,
               ),
-              category: _selectedCategory,
+              categoryId: _selectedCategoryId,
               type: widget.type,
               date: _selectedDate,
               note: _noteController.text.trim().isEmpty
@@ -102,9 +130,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   : _noteController.text.trim(),
             );
 
+
         await provider.updateTransaction(
           updatedTransaction,
         );
+
 
         if (!mounted) return;
 
@@ -112,7 +142,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           'Transaction updated successfully!',
         );
 
+
       } else {
+
+
         final transaction = TransactionModel(
           id: '',
           userId: user.id,
@@ -120,7 +153,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           amount: double.parse(
             _amountController.text,
           ),
-          category: _selectedCategory,
+          categoryId: _selectedCategoryId!,
           type: widget.type,
           date: _selectedDate,
           note: _noteController.text.trim().isEmpty
@@ -129,9 +162,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           createdAt: DateTime.now(),
         );
 
+
         await provider.addTransaction(
           transaction,
         );
+
 
         if (!mounted) return;
 
@@ -140,9 +175,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
         );
       }
 
+
       Navigator.pop(context);
 
+
     } catch (e) {
+
       if (!mounted) return;
 
       context.showError(
@@ -151,14 +189,20 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
 
-    final categoryProvider = context.watch<CategoryProvider>();
+    final categoryProvider =
+        context.watch<CategoryProvider>();
 
-    final categories = categoryProvider.categoriesByType(
-      widget.type,
-    );
+
+    final categories =
+        categoryProvider.categoriesByType(
+          widget.type,
+        );
+
 
     if (categoryProvider.isLoading) {
       return const Scaffold(
@@ -167,6 +211,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
         ),
       );
     }
+
 
     if (categories.isEmpty) {
       return Scaffold(
@@ -186,10 +231,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       );
     }
 
-    if (!isEditing && _selectedCategory.isEmpty && categories.isNotEmpty) {
-      _selectedCategory = categories.first.name;
+
+    if (!isEditing && _selectedCategoryId == null) {
+      _selectedCategoryId = categories.first.id;
     }
-    
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -200,110 +247,174 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   : AppStrings.addIncome,
         ),
       ),
+
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
+
         child: Form(
           key: _formKey,
+
           child: Column(
             children: [
+
+
               TextFormField(
                 controller: _titleController,
+
                 decoration: const InputDecoration(
                   labelText: AppStrings.title,
                   prefixIcon: Icon(Icons.title),
                 ),
+
                 validator: (value) {
-                  if(value == null || value.trim().isEmpty) {
+                  if (value == null ||
+                      value.trim().isEmpty) {
                     return 'Please enter a title.';
                   }
+
                   return null;
                 },
               ),
 
+
               const SizedBox(height: 16),
+
 
               TextFormField(
                 controller: _amountController,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
+
+                keyboardType:
+                    const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+
                 decoration: const InputDecoration(
                   labelText: AppStrings.amount,
                   prefixText: '₱ ',
-                  prefixIcon: Icon(Icons.payments_outlined),
+                  prefixIcon:
+                      Icon(Icons.payments_outlined),
                 ),
+
+
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+
+                  if (value == null ||
+                      value.isEmpty) {
                     return 'Please enter an amount.';
                   }
 
-                  final amount = double.tryParse(value);
 
-                  if (amount == null || amount <= 0) {
+                  final amount =
+                      double.tryParse(value);
+
+
+                  if (amount == null ||
+                      amount <= 0) {
                     return 'Enter a valid amount.';
                   }
+
 
                   return null;
                 },
               ),
 
+
+
               const SizedBox(height: 16),
 
+
+
               DropdownButtonFormField<String>(
-                initialValue: _selectedCategory,
-                decoration: const InputDecoration(
-                  labelText: 'Category',
-                ),
+                initialValue: _selectedCategoryId,
+
+                decoration:
+                    const InputDecoration(
+                      labelText: 'Category',
+                    ),
+
+
                 items: categories.map((category) {
+
                   return DropdownMenuItem<String>(
-                    value: category.name,
-                    child: Text(category.name),
+                    value: category.id,
+
+                    child: Text(
+                      category.name,
+                    ),
                   );
+
                 }).toList(),
+
+
                 onChanged: (value) {
-                  if (value == null) return;
 
                   setState(() {
-                    _selectedCategory = value;
+                    _selectedCategoryId = value;
                   });
+
                 },
               ),
 
+
+
               const SizedBox(height: 16),
+
 
               TextFormField(
                 readOnly: true,
-                controller: TextEditingController(
-                  text:
-                      "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
-                ),
-                decoration: const InputDecoration(
-                  labelText: AppStrings.date,
-                  prefixIcon: Icon(Icons.calendar_month),
-                ),
+
+                controller:
+                    TextEditingController(
+                      text:
+                          "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
+                    ),
+
+                decoration:
+                    const InputDecoration(
+                      labelText: AppStrings.date,
+                      prefixIcon:
+                          Icon(Icons.calendar_month),
+                    ),
+
                 onTap: _selectDate,
               ),
 
+
+
               const SizedBox(height: 16),
+
+
 
               TextFormField(
                 controller: _noteController,
+
                 maxLines: 3,
-                decoration: const InputDecoration(
-                  labelText: AppStrings.notes,
-                  prefixIcon: Icon(Icons.notes),
-                  alignLabelWithHint: true,
-                ),
+
+                decoration:
+                    const InputDecoration(
+                      labelText: AppStrings.notes,
+                      prefixIcon: Icon(Icons.notes),
+                      alignLabelWithHint: true,
+                    ),
               ),
+
+
 
               const SizedBox(height: 32),
 
+
+
               SizedBox(
                 width: double.infinity,
+
                 child: FilledButton.icon(
-                  onPressed: _save, 
+                  onPressed: _save,
+
                   icon: const Icon(Icons.save),
-                  label: const Text(AppStrings.save),
+
+                  label:
+                      const Text(AppStrings.save),
                 ),
               ),
             ],

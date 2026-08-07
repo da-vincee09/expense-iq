@@ -70,7 +70,6 @@ class RecentTransactions extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: transactions.length,
           itemBuilder: (context, index) {
-
             return TransactionCard(
               transaction: transactions[index],
             );

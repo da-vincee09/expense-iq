@@ -6,9 +6,11 @@ class AppRoutes {
   static const dashboard = '/dashboard';
   static const profile = '/profile';
   static const settings = '/settings';
+  static const about = '/about';
   static const categories = '/categories';
 
   static const addTransaction = '/add-transaction';
-  static const editTransaction = '/edit-transaction';
   static const transactionHistory = '/transaction-history';
+
+  static const statistics = '/statistics';
 }

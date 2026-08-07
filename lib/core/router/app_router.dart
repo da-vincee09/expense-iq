@@ -6,6 +6,9 @@ import 'package:expense_iq/features/authentication/presentation/screens/splash_s
 import 'package:expense_iq/features/category/presentation/screens/category_screen.dart';
 import 'package:expense_iq/features/navigation/presentation/screens/main_screen.dart';
 import 'package:expense_iq/features/profile/presentation/screens/profile_screen.dart';
+import 'package:expense_iq/features/settings/presentation/about_screen.dart';
+import 'package:expense_iq/features/settings/presentation/settings_screen.dart';
+import 'package:expense_iq/features/statistics/presentation/screens/statistics_screen.dart';
 import 'package:expense_iq/features/transactions/data/models/transaction_model.dart';
 import 'package:expense_iq/features/transactions/presentation/screens/add_transcation_screen.dart';
 import 'package:expense_iq/features/transactions/presentation/screens/transaction_history_screen.dart';
@@ -75,6 +78,21 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.categories,
       builder: (context, state) => const CategoryScreen(),
+    ),
+
+    GoRoute(
+      path: AppRoutes.statistics,
+      builder: (context, state) => const StatisticsScreen(),
+    ),
+
+    GoRoute(
+      path: AppRoutes.settings,
+      builder: (context, state) => const SettingsScreen(),
+    ),
+
+    GoRoute(
+      path: AppRoutes.about,
+      builder: (context, state) => const AboutScreen(),
     ),
   ],
 );

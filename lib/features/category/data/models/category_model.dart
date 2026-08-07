@@ -19,14 +19,17 @@ class CategoryModel {
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
     return CategoryModel(
-      id: json['id'],
-      userId: json['user_id'],
-      name: json['name'],
+      id: json['id']?.toString() ?? '',
+      userId: json['user_id']?.toString() ?? '',
+      name: json['name'] ?? '',
       type: TransactionType.values.firstWhere(
         (e) => e.name == json['type'],
+        orElse: () => TransactionType.expense,
       ),
       icon: json['icon'],
-      createdAt: DateTime.parse(json['created_at']),
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : DateTime.now(),
     );
   }
 
