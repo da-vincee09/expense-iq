@@ -225,11 +225,11 @@ flutter run
 
 | Dashboard | Transactions |
 |-----------|--------------|
-| <img src="screenshots/dashboard.png" width="250"/> | <img src="screenshots/transactions.png" width="250"/> |
+| ![](screenshots/dashboard.jpg) | ![](screenshots/transactions.jpg) |
 
 | Statistics | Profile |
 |------------|---------|
-| <img src="screenshots/statistics.png" width="250"/> | <img src="screenshots/profile.png" width="250"/> |
+| ![](screenshots/statistics.jpg) | ![](screenshots/profile.jpg) |
 
 ---
 
