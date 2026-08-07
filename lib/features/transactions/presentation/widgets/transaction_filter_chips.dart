@@ -3,6 +3,10 @@ import 'package:expense_iq/features/transactions/presentation/providers/transact
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Provides transaction type filters.
+///
+/// Allows users to filter transactions
+/// by all, income, or expense categories.
 class TransactionFilterChips extends StatelessWidget {
   const TransactionFilterChips({super.key});
 

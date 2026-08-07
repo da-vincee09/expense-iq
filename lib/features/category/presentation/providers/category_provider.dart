@@ -3,6 +3,11 @@ import 'package:expense_iq/features/category/data/models/category_model.dart';
 import 'package:expense_iq/features/category/domain/repositories/category_repository.dart';
 import 'package:flutter/material.dart';
 
+/// Manages category state and operations.
+///
+/// Acts as a bridge between the presentation layer and the
+/// category repository by handling category loading, creation,
+/// updating, deletion, filtering, loading states, and errors.
 class CategoryProvider extends ChangeNotifier {
   final CategoryRepository _repository;
 
@@ -11,14 +16,12 @@ class CategoryProvider extends ChangeNotifier {
   final List<CategoryModel> _categories = [];
 
   bool _isLoading = false;
-  String? _errorMessage;
-
-  List<CategoryModel> get categories =>
-      List.unmodifiable(_categories);
-
   bool get isLoading => _isLoading;
 
+  String? _errorMessage;
   String? get errorMessage => _errorMessage;
+
+  List<CategoryModel> get categories => List.unmodifiable(_categories);
 
   Future<void> loadCategories() async {
     _isLoading = true;

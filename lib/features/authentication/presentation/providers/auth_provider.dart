@@ -1,6 +1,11 @@
 import 'package:expense_iq/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
 
+/// Manages authentication state and user actions.
+///
+/// Acts as a bridge between the presentation layer and the
+/// authentication repository by handling login, registration,
+/// logout, loading states, and error messages.
 class AuthProvider extends ChangeNotifier{
 
   final AuthRepository authRepository;
@@ -8,12 +13,10 @@ class AuthProvider extends ChangeNotifier{
   AuthProvider({required this.authRepository});
 
   bool _isLoading = false;
-
   bool get isLoading => _isLoading;
 
 
   String? _errorMessage;
-
   String? get errorMessage => _errorMessage;
 
   void clearError() {
@@ -27,7 +30,6 @@ class AuthProvider extends ChangeNotifier{
     required String email,
     required String password,
   }) async {
-
     try {
       _isLoading = true;
       _errorMessage = null;
@@ -60,7 +62,6 @@ class AuthProvider extends ChangeNotifier{
         email: email, 
         password: password
       );
-
     } catch (e) {
       _errorMessage = e.toString().replaceFirst("Exception: ", "");
     } finally {
@@ -73,6 +74,5 @@ class AuthProvider extends ChangeNotifier{
     await authRepository.signOut();
     notifyListeners();
   }
-
 
 }

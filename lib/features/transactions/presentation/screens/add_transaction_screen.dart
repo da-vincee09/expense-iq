@@ -8,6 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Defines the interface for adding and editing transactions.
+///
+/// Provides a form for entering transaction details,
+/// selecting categories, and saving financial records.
 class AddTransactionScreen extends StatefulWidget {
   final TransactionType type;
   final TransactionModel? transaction;

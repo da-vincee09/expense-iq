@@ -2,6 +2,10 @@ import 'package:expense_iq/features/transactions/presentation/providers/transact
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Provides a search field for transactions.
+///
+/// Allows users to search transaction records
+/// by entering keywords from transaction titles.
 class TransactionSearchBar extends StatelessWidget {
   const TransactionSearchBar({super.key});
 

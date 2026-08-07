@@ -3,6 +3,10 @@ import 'package:expense_iq/features/transactions/data/models/transaction_model.d
 import 'package:expense_iq/features/transactions/domain/repositories/transaction_repository.dart';
 import 'package:flutter/material.dart';
 
+/// Manages transaction state and business logic.
+///
+/// Handles loading, adding, updating, deleting, searching,
+/// filtering, and calculating transaction summaries.
 class TransactionProvider extends ChangeNotifier {
   final TransactionRepository _repository;
 

@@ -1,6 +1,10 @@
 import 'package:expense_iq/core/enums/transaction_type.dart';
 import 'package:expense_iq/features/category/data/models/category_model.dart';
 
+/// Represents a financial transaction.
+///
+/// Stores transaction details including title, amount,
+/// category, transaction type, date, notes, and related metadata.
 class TransactionModel {
   final String id;
   final String userId;

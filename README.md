@@ -1,154 +1,222 @@
+Here is the complete `README.md` content in Markdown format:
+
+````markdown
 # 💰 ExpenseIQ
 
-ExpenseIQ is a personal expense tracking application built with **Flutter** and **Supabase**. It helps users manage their income and expenses, monitor their monthly budget, and organize transactions using customizable categories.
+**Track. Manage. Understand.**
+
+ExpenseIQ is a Flutter personal finance management application that helps users monitor their income, expenses, budgets, and financial insights. The app allows users to organize transactions, manage categories, analyze spending habits, and maintain their financial records with a clean and modern interface.
+
+The project demonstrates clean Flutter architecture using the **Provider state management pattern**, **Repository Pattern**, **Dependency Injection**, and **Supabase backend integration**.
 
 ---
 
-## ✨ Features
+## 📱 Features
 
-### 🔐 Authentication
-
-* User registration
-* User login
-* Persistent authentication session
-* Secure logout
-
-### 📊 Dashboard
-
-* 💵 Total Balance
-* 📈 Total Income
-* 📉 Total Expenses
-* 🎯 Monthly budget progress
-* 🕒 Recent transactions
-* 📋 Complete transaction history
-
-### 💳 Transactions
-
-* ➕ Add income
-* ➖ Add expenses
-* ✏️ Edit transactions
-* 🗑️ Delete transactions
-* 📝 Notes support
-* 🏷️ Category selection
-* 📅 Date selection
-
-### 🏷️ Categories
-
-* ➕ Create custom categories
-* ✏️ Update categories
-* 🗑️ Delete categories
-* 💰 Separate Income and Expense categories
-* 🔄 Dynamic category loading from Supabase
-
-### 👤 Profile
-
-* View profile information
-* ✏️ Update profile
-* 💰 Set monthly budget
-* 🏷️ Manage categories
+- 💵 Track income and expense transactions
+- ➕ Add new financial transactions
+- ✏️ Edit existing transactions
+- 🗑️ Delete transactions
+- 🔍 Search transactions by title
+- 🏷️ Filter transactions by category and type
+- 📂 Create and manage transaction categories
+- 📊 View financial statistics and expense breakdowns
+- 📈 Monitor monthly budget progress
+- 👤 Manage user profile information
+- 🖼️ Upload and update profile images
+- 🔐 User authentication with Supabase
+- 🌙 Light and dark theme support
+- 🧭 Smooth navigation using GoRouter
+- ⚡ Loading, empty, and error state handling
+- 🎨 Clean and responsive Material UI design
 
 ---
 
 ## 🛠️ Tech Stack
 
-### 📱 Frontend
-
-* Flutter
-* Provider (State Management)
-* GoRouter (Navigation)
-
-### ☁️ Backend
-
-* Supabase
-* PostgreSQL
-* Row Level Security (RLS)
-* Supabase Authentication
+- **Flutter**
+- **Dart**
+- **Provider** (State Management)
+- **Repository Pattern**
+- **Dependency Injection**
+- **Supabase**
+  - Authentication
+  - PostgreSQL Database
+  - Storage
+- **GoRouter**
+- **FL Chart**
+- **Image Picker**
 
 ---
 
 ## 🏗️ Architecture
 
-The project follows a **feature-first architecture** with clear separation of concerns.
+ExpenseIQ follows a feature-based Clean Architecture approach.
+
+```text
+                         UI
+                          │
+                          ▼
+                  Provider Layer
+                          │
+              ┌───────────┴───────────┐
+              ▼                       ▼
+       Repository Layer        Business Logic
+              │
+              ▼
+        Supabase Backend
+              │
+      ┌───────┼────────┐
+      ▼       ▼        ▼
+ Database   Auth    Storage
+```
+
+Each layer has a single responsibility:
+
+- **UI Layer** – Displays screens, widgets, and handles user interactions.
+- **Provider Layer** – Manages application state, validation, and business logic.
+- **Repository Layer** – Provides an abstraction between the application and external services.
+- **Supabase Layer** – Handles authentication, database operations, and file storage.
+
+---
+
+## 📂 Project Structure
 
 ```text
 lib/
+│
 ├── core/
+│   ├── constants/
+│   ├── enums/
+│   ├── router/
+│   └── theme/
+│
 ├── features/
-│   ├── auth/
+│   │
+│   ├── authentication/
+│   │   ├── data/
+│   │   ├── domain/
+│   │   └── presentation/
+│   │
+│   ├── transactions/
+│   │   ├── data/
+│   │   ├── domain/
+│   │   └── presentation/
+│   │
 │   ├── category/
-│   ├── dashboard/
-│   ├── navigation/
+│   │   ├── data/
+│   │   ├── domain/
+│   │   └── presentation/
+│   │
 │   ├── profile/
-│   └── transactions/
+│   │   ├── data/
+│   │   ├── domain/
+│   │   └── presentation/
+│   │
+│   └── statistics/
+│       └── presentation/
+│
 ├── shared/
+│   └── extensions/
+│
 └── main.dart
 ```
-
-Each feature is organized into:
-
-* 📂 Data
-* 🧩 Domain
-* 🎨 Presentation
 
 ---
 
 ## 🗄️ Database
 
-### Tables
+ExpenseIQ uses **Supabase PostgreSQL** as its backend database.
 
-* 👤 `profiles`
-* 💳 `transactions`
-* 🏷️ `categories`
+### Profiles
 
-All tables are protected using **Row Level Security (RLS)** so users can only access their own data.
+Stores user profile information.
 
----
+```text
+profiles
+│
+├── id
+├── name
+├── email
+├── monthly_budget
+├── profile_image
+├── created_at
+└── updated_at
+```
 
-## ✅ Current Functionality
+### Transactions
 
-* 🔐 Authentication
-* 👤 Profile Management
-* 💰 Monthly Budget
-* 💳 Transaction CRUD
-* 🏷️ Category CRUD
-* 📊 Dashboard Overview
-* 🔄 Dynamic Categories
-* 🧭 Bottom Navigation
+Stores all financial records.
 
----
+```text
+transactions
+│
+├── id
+├── user_id
+├── title
+├── amount
+├── category_id
+├── type
+├── date
+├── note
+└── created_at
+```
 
-## 🚀 Planned Features
+### Categories
 
-* 🔍 Transaction Search
-* 🎛️ Transaction Filters
-* 📈 Analytics Dashboard
-* 📊 Charts & Reports
-* 📄 Export to CSV/PDF
-* 🔔 Notifications
-* ⚙️ Settings
-* 🌙 Dark Mode
+Stores transaction categories.
+
+```text
+categories
+│
+├── id
+├── user_id
+├── name
+├── type
+├── icon
+└── created_at
+```
 
 ---
 
 ## 🚀 Getting Started
 
-### 📋 Prerequisites
-
-* Flutter SDK
-* Dart SDK
-* Supabase Project
-
-### 📥 Installation
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/expense_iq.git
-cd expense_iq
+git clone https://github.com/your-username/expenseiq.git
+```
+
+### 2. Navigate to the project
+
+```bash
+cd expenseiq
+```
+
+### 3. Install dependencies
+
+```bash
 flutter pub get
 ```
 
-Configure your Supabase project credentials (such as in a `.env` file or your preferred configuration).
+### 4. Configure Supabase
 
-Run the application:
+Update your Supabase credentials inside:
+
+```text
+lib/core/constants/supabase_config.dart
+```
+
+Example:
+
+```dart
+class SupabaseConfig {
+  static const url = "YOUR_SUPABASE_URL";
+  static const publishableKey = "YOUR_SUPABASE_KEY";
+}
+```
+
+### 5. Run the application
 
 ```bash
 flutter run
@@ -156,8 +224,54 @@ flutter run
 
 ---
 
-## 👨‍💻 Author
+## 📸 Screenshots
 
-Developed by **Rodini Vince Rosario** as a Flutter portfolio project showcasing modern mobile application development with **Flutter**, **Provider**, **GoRouter**, and **Supabase**.
+| Dashboard | Transactions |
+|-----------|--------------|
+| <img src="screenshots/dashboard.png" width="250"/> | <img src="screenshots/transactions.png" width="250"/> |
 
-⭐ If you like this project, consider giving it a star on GitHub!
+| Statistics | Profile |
+|------------|---------|
+| <img src="screenshots/statistics.png" width="250"/> | <img src="screenshots/profile.png" width="250"/> |
+
+---
+
+## 🎯 Learning Objectives
+
+This project demonstrates:
+
+- Flutter application architecture
+- Clean Architecture principles
+- Provider state management
+- Repository Pattern implementation
+- Dependency Injection
+- Supabase integration
+- Authentication handling
+- Database CRUD operations
+- File upload and storage handling
+- Data visualization with charts
+- Navigation using GoRouter
+- Form validation
+- Error and loading state management
+- Responsive Material UI design
+
+---
+
+## 🔮 Future Improvements
+
+Possible future features:
+
+- 📄 Export financial reports
+- 🤖 AI-powered spending insights
+- 🔔 Budget notifications
+- 🔁 Recurring transactions
+- 🎯 Savings goals tracking
+- 📱 Mobile notifications
+- 📊 Advanced analytics dashboard
+
+---
+
+## 📄 License
+
+This project was created for educational and portfolio purposes.
+````

@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// Displays a single transaction item.
+///
+/// Shows transaction details including title, category,
+/// amount, transaction type, and provides edit and delete actions.
 class TransactionCard extends StatelessWidget {
   final TransactionModel transaction;
 

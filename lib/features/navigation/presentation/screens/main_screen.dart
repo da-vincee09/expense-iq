@@ -2,6 +2,10 @@ import 'package:expense_iq/features/dashboard/presentation/screens/dashboard_scr
 import 'package:expense_iq/features/profile/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
+/// Provides the main application navigation layout.
+///
+/// Contains bottom navigation between the dashboard and profile screens.
+/// Uses IndexedStack to preserve the state of each page.
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 

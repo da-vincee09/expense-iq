@@ -1,5 +1,9 @@
 import 'package:expense_iq/core/enums/transaction_type.dart';
 
+/// Represents a transaction category in the application.
+///
+/// Handles category data mapping between the database and
+/// application layer, including JSON conversion and immutable updates.
 class CategoryModel {
   final String id;
   final String userId;

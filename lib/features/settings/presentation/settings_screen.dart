@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// Displays application settings.
+///
+/// Allows users to customize app preferences,
+/// including switching between light and dark themes,
+/// and accessing application information.
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 

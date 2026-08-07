@@ -1,46 +1,52 @@
 import 'dart:io';
+
 import 'package:expense_iq/features/profile/data/models/profile_model.dart';
 import 'package:expense_iq/features/profile/domain/repositories/profile_repository.dart';
 import 'package:path/path.dart' as path;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ProfileRepositoryImpl implements ProfileRepository{
-
+/// Handles profile-related data operations.
+///
+/// Responsible for retrieving, updating, and uploading user profile data
+/// using Supabase authentication, database, and storage services.
+class ProfileRepositoryImpl implements ProfileRepository {
   final SupabaseClient supabase;
 
-  ProfileRepositoryImpl({required this.supabase});
+  ProfileRepositoryImpl({
+    required this.supabase,
+  });
 
   @override
   Future<ProfileModel> getProfile() async {
     final user = supabase.auth.currentUser;
 
-    if(user == null) {
+    if (user == null) {
       throw Exception("User not authenticated.");
     }
 
     final response = await supabase
-      .from('profiles')
-      .select()
-      .eq('id', user.id)
-      .single();
-    
+        .from('profiles')
+        .select()
+        .eq('id', user.id)
+        .single();
+
     return ProfileModel.fromJson(response);
-  } 
+  }
 
   @override
   Future<void> updateProfile(ProfileModel profile) async {
     await supabase
-    .from('profiles')
-    .update({
-      'name': profile.name,
-      'monthly_budget': profile.monthlyBudget,
-      'profile_image': profile.profileImage,
-      'updated_at': DateTime.now().toIso8601String(),
-    })
-    .eq('id', profile.id);
+        .from('profiles')
+        .update({
+          'name': profile.name,
+          'monthly_budget': profile.monthlyBudget,
+          'profile_image': profile.profileImage,
+          'updated_at': DateTime.now().toIso8601String(),
+        })
+        .eq('id', profile.id);
   }
 
-   @override
+  @override
   Future<String> uploadProfileImage(File image) async {
     final user = supabase.auth.currentUser;
 
@@ -48,20 +54,34 @@ class ProfileRepositoryImpl implements ProfileRepository{
       throw Exception("User is not authenticated");
     }
 
-    final fileName = '${user.id}/profile${path.extension(image.path)}';
+    final fileName =
+        '${user.id}/profile${path.extension(image.path)}';
 
     await supabase.storage
         .from('profile-images')
-        .upload(fileName, image);
+        .upload(
+          fileName,
+          image,
+          fileOptions: const FileOptions(
+            upsert: true,
+          ),
+        );
 
-    return supabase.storage
+    final imageUrl = supabase.storage
         .from('profile-images')
         .getPublicUrl(fileName);
+
+    // Prevent displaying cached old images
+    return '$imageUrl?t=${DateTime.now().millisecondsSinceEpoch}';
   }
 
   @override
   Future<void> updateProfileImage(String imageUrl) async {
-    final user = supabase.auth.currentUser!;
+    final user = supabase.auth.currentUser;
+
+    if (user == null) {
+      throw Exception("User is not authenticated");
+    }
 
     await supabase
         .from('profiles')

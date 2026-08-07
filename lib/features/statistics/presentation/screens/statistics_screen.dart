@@ -4,6 +4,10 @@ import 'package:expense_iq/features/transactions/presentation/providers/transact
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Displays financial statistics and insights.
+///
+/// Shows account summaries, income and expense breakdowns,
+/// category spending analysis, and visual expense charts.
 class StatisticsScreen extends StatelessWidget {
   const StatisticsScreen({super.key});
 
@@ -33,114 +37,114 @@ class StatisticsScreen extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
-        children: [
+          children: [
 
-          /// SUMMARY
-          Text(
-            "Overview",
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+            /// SUMMARY
+            Text(
+              "Overview",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
 
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1.15, // was 1.35
-            children: [
-              _SummaryCard(
-                title: "Balance",
-                value: "₱${provider.balance.toStringAsFixed(2)}",
-                icon: Icons.account_balance_wallet,
-                color: Colors.blue,
-              ),
-              _SummaryCard(
-                title: "Income",
-                value: "₱${provider.totalIncome.toStringAsFixed(2)}",
-                icon: Icons.arrow_downward,
-                color: AppColors.income,
-              ),
-              _SummaryCard(
-                title: "Expenses",
-                value: "₱${provider.totalExpense.toStringAsFixed(2)}",
-                icon: Icons.arrow_upward,
-                color: AppColors.expense,
-              ),
-              _SummaryCard(
-                title: "Transactions",
-                value: provider.transactions.length.toString(),
-                icon: Icons.receipt_long,
-                color: Colors.orange,
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 24),
-
-          Text(
-            "Expense Breakdown",
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-
-          const SizedBox(height: 16),
-
-          ExpensePieChart(
-            expenses: provider.expensesByCategory,
-          ),
-
-          const SizedBox(height: 24),
-
-          Text(
-            "Expenses by Category",
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-
-          const SizedBox(height: 12),
-
-          ...provider.expensesByCategory.entries.map((entry) {
-
-            final percent = totalExpense == 0
-                ? 0
-                : (entry.value / totalExpense) * 100;
-
-            return Card(
-              margin: const EdgeInsets.only(bottom: 10),
-              child: ListTile(
-                leading: const CircleAvatar(
-                  child: Icon(Icons.category),
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 1.15, // was 1.35
+              children: [
+                _SummaryCard(
+                  title: "Balance",
+                  value: "₱${provider.balance.toStringAsFixed(2)}",
+                  icon: Icons.account_balance_wallet,
+                  color: Colors.blue,
                 ),
-                title: Text(entry.key),
-                subtitle:
-                    Text("${percent.toStringAsFixed(1)}%"),
-                trailing: Text(
-                  "₱${entry.value.toStringAsFixed(2)}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                _SummaryCard(
+                  title: "Income",
+                  value: "₱${provider.totalIncome.toStringAsFixed(2)}",
+                  icon: Icons.arrow_downward,
+                  color: AppColors.income,
+                ),
+                _SummaryCard(
+                  title: "Expenses",
+                  value: "₱${provider.totalExpense.toStringAsFixed(2)}",
+                  icon: Icons.arrow_upward,
+                  color: AppColors.expense,
+                ),
+                _SummaryCard(
+                  title: "Transactions",
+                  value: provider.transactions.length.toString(),
+                  icon: Icons.receipt_long,
+                  color: Colors.orange,
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 24),
+
+            Text(
+              "Expense Breakdown",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+
+            const SizedBox(height: 16),
+
+            ExpensePieChart(
+              expenses: provider.expensesByCategory,
+            ),
+
+            const SizedBox(height: 24),
+
+            Text(
+              "Expenses by Category",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+
+            const SizedBox(height: 12),
+
+            ...provider.expensesByCategory.entries.map((entry) {
+
+              final percent = totalExpense == 0
+                  ? 0
+                  : (entry.value / totalExpense) * 100;
+
+              return Card(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: ListTile(
+                  leading: const CircleAvatar(
+                    child: Icon(Icons.category),
+                  ),
+                  title: Text(entry.key),
+                  subtitle:
+                      Text("${percent.toStringAsFixed(1)}%"),
+                  trailing: Text(
+                    "₱${entry.value.toStringAsFixed(2)}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-            );
-          }),
-        ],
-      ),
-    );
+              );
+            }),
+          ],
+        ),
+      );
+    }
   }
-}
 
-class _SummaryCard extends StatelessWidget {
-  final String title;
-  final String value;
-  final IconData icon;
-  final Color color;
+  class _SummaryCard extends StatelessWidget {
+    final String title;
+    final String value;
+    final IconData icon;
+    final Color color;
 
-  const _SummaryCard({
-    required this.title,
-    required this.value,
-    required this.icon,
-    required this.color,
+    const _SummaryCard({
+      required this.title,
+      required this.value,
+      required this.icon,
+      required this.color,
   });
 
   @override

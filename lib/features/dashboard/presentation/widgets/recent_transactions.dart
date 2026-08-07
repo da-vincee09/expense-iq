@@ -2,6 +2,10 @@ import 'package:expense_iq/features/transactions/data/models/transaction_model.d
 import 'package:expense_iq/features/transactions/presentation/widgets/transaction_card.dart';
 import 'package:flutter/material.dart';
 
+/// Displays a list of the user's recent transactions.
+///
+/// Shows an empty state when there are no transactions.
+/// Provides an optional callback to navigate to the full transaction history.
 class RecentTransactions extends StatelessWidget {
   final List<TransactionModel> transactions;
   final VoidCallback? onViewAll;

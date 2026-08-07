@@ -1,6 +1,10 @@
 import 'package:expense_iq/core/enums/transaction_type.dart';
 import 'package:flutter/material.dart';
 
+/// Provides a reusable dialog for creating and editing categories.
+///
+/// Handles category name input, transaction type selection,
+/// validation, and returns the entered data through a callback.
 class CategoryDialog extends StatefulWidget {
   final String? initialName;
   final TransactionType initialType;

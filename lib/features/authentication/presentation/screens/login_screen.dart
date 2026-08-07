@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// Provides the user login interface.
+///
+/// Handles email and password authentication through AuthProvider
+/// and manages navigation after successful authentication.
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -45,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+  
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();

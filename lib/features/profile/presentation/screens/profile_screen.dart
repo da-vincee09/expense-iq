@@ -8,6 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// Displays the user's profile information.
+///
+/// Shows profile details, profile image, monthly budget,
+/// account actions, category management, settings navigation,
+/// and logout functionality.
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 

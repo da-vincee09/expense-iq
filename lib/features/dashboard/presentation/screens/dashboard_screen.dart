@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// Displays the main dashboard overview.
+///
+/// Shows financial summaries, budget progress, and recent transactions
+/// while allowing users to quickly add income or expense records.
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 

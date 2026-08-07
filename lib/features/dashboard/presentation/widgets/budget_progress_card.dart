@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Displays the user's monthly budget progress.
+///
+/// Shows budget usage percentage, spending amount,
+/// remaining balance, and total monthly budget.
 class BudgetProgressCard extends StatelessWidget {
   final double monthlyBudget;
   final double spent;

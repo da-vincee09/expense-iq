@@ -1,3 +1,7 @@
+/// Represents the user's profile information.
+///
+/// Stores user details such as name, email, monthly budget,
+/// and profile image URL.
 class ProfileModel {
 
   final String id;

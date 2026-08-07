@@ -2,6 +2,11 @@ import 'package:expense_iq/features/category/data/models/category_model.dart';
 import 'package:expense_iq/features/category/domain/repositories/category_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Implementation of category repository using Supabase.
+///
+/// Handles retrieving, creating, updating, and deleting categories
+/// from the database while keeping data access separate from the
+/// application logic.
 class CategoryRepositoryImpl implements CategoryRepository {
   final SupabaseClient supabase;
 

@@ -1,5 +1,9 @@
 import 'package:expense_iq/features/transactions/data/models/transaction_model.dart';
 
+/// Defines the contract for transaction operations.
+///
+/// Provides methods for retrieving, creating,
+/// updating, and deleting financial transactions.
 abstract interface class TransactionRepository {
   Future<List<TransactionModel>> getTransactions();
 

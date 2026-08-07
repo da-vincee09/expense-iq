@@ -3,6 +3,10 @@ import 'package:expense_iq/features/transactions/presentation/providers/transact
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Provides a category filter for transactions.
+///
+/// Allows users to filter transaction records
+/// by selecting a specific category.
 class TransactionCategoryFilter extends StatelessWidget {
   const TransactionCategoryFilter({super.key});
 

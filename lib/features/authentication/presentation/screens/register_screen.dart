@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// Provides the user registration interface.
+///
+/// Handles account creation through AuthProvider and manages
+/// form validation, loading states, errors, and navigation.
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -187,7 +191,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
 
-
                   TextButton(
                     onPressed: () {
                       context.read<AuthProvider>().clearError();
@@ -197,7 +200,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       'Already have an account?',
                     ),
                   ),
-
                 ],
               ),
             )

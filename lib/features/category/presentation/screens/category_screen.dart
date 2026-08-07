@@ -9,6 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Displays and manages user transaction categories.
+///
+/// Allows users to view, add, edit, and delete categories while
+/// communicating with CategoryProvider for state management.
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
@@ -17,6 +21,7 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  
   @override
   void initState() {
     super.initState();
@@ -184,7 +189,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                                _CategorySection(
+                _CategorySection(
                   title: 'Expense',
                   categories: expenseCategories,
                   onEdit: _showEditCategoryDialog,

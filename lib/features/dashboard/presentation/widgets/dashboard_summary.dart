@@ -1,6 +1,10 @@
 import 'package:expense_iq/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
+/// Displays a summary of the user's financial status.
+///
+/// Shows the current balance along with total income
+/// and expenses using reusable summary components.
 class DashboardSummary extends StatelessWidget {
   final double balance;
   final double income;

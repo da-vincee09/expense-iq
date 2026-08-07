@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// Centralized application typography configuration.
+///
+/// Defines consistent text styles across the app using Google Fonts
+/// to maintain a unified visual design.
 class AppTextTheme {
   static TextTheme get textTheme {
     final base = GoogleFonts.teachersTextTheme();

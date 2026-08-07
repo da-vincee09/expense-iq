@@ -18,6 +18,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Initializes the ExpenseIQ application.
+/// 
+/// Configures Supabase, registers dependency injection,
+/// sets up state management providers, and launches the app.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

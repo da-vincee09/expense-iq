@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Displays information about the application.
+///
+/// Shows the app name, version, features,
+/// and basic information about ExpenseIQ.
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 

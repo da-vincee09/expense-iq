@@ -2,6 +2,10 @@ import 'package:expense_iq/features/profile/presentation/providers/profile_provi
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Provides an interface for editing user profile information.
+///
+/// Allows users to update their name and monthly budget
+/// while keeping email information read-only.
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 

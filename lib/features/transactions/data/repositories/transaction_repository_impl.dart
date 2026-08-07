@@ -4,6 +4,10 @@ import 'package:expense_iq/features/transactions/data/models/transaction_model.d
 import 'package:expense_iq/features/transactions/domain/repositories/transaction_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Handles transaction data operations.
+///
+/// Manages retrieving, creating, updating, and deleting
+/// user transactions through Supabase database services.
 class TransactionRepositoryImpl implements TransactionRepository{
   final SupabaseClient supabase;
 

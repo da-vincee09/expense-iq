@@ -1,6 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+/// Displays an expense distribution chart.
+///
+/// Visualizes spending across different categories
+/// using a pie chart to show expense proportions.
 class ExpensePieChart extends StatelessWidget {
   final Map<String, double> expenses;
 

@@ -1,4 +1,9 @@
+// Application route configuration.
+//
+// Defines all navigation paths using GoRouter and applies
+// consistent page transitions through AppPageBuilder.
 import 'package:expense_iq/core/enums/transaction_type.dart';
+import 'package:expense_iq/core/router/app_page_builder.dart';
 import 'package:expense_iq/core/router/app_routes.dart';
 import 'package:expense_iq/features/authentication/presentation/screens/login_screen.dart';
 import 'package:expense_iq/features/authentication/presentation/screens/register_screen.dart';
@@ -10,89 +15,124 @@ import 'package:expense_iq/features/settings/presentation/about_screen.dart';
 import 'package:expense_iq/features/settings/presentation/settings_screen.dart';
 import 'package:expense_iq/features/statistics/presentation/screens/statistics_screen.dart';
 import 'package:expense_iq/features/transactions/data/models/transaction_model.dart';
-import 'package:expense_iq/features/transactions/presentation/screens/add_transcation_screen.dart';
+import 'package:expense_iq/features/transactions/presentation/screens/add_transaction_screen.dart';
 import 'package:expense_iq/features/transactions/presentation/screens/transaction_history_screen.dart';
 import 'package:go_router/go_router.dart';
 
+// Central application router used for managing navigation
+// between screens throughout the app.
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.splash,
   routes: [
     GoRoute(
       path: AppRoutes.splash,
-      builder: (context, state) {
-        return const SplashScreen();
+      pageBuilder: (context, state) {
+        return AppPageBuilder.fade(
+          child: const SplashScreen(),
+        );
       },
     ),
 
     GoRoute(
       path: AppRoutes.login,
-      builder: (context, state) {
-        return const LoginScreen();
+      pageBuilder: (context, state) {
+        return AppPageBuilder.fade(
+          child: const LoginScreen(),
+        );
       },
     ),
 
     GoRoute(
       path: AppRoutes.register,
-      builder: (context, state) {
-        return const RegisterScreen();
+      pageBuilder: (context, state) {
+        return AppPageBuilder.fade(
+          child: const RegisterScreen(),
+        );
       },
     ),
 
     GoRoute(
       path: AppRoutes.dashboard,
-      builder: (context, state) {
-        return const MainScreen();
+      pageBuilder: (context, state) {
+        return AppPageBuilder.fade(
+          child: const MainScreen(),
+        );
       },
     ),
 
     GoRoute(
       path: AppRoutes.profile,
-      builder: (context, state) => const ProfileScreen(),
+      pageBuilder: (context, state) {
+        return AppPageBuilder.fade(
+          child: const ProfileScreen(),
+        );
+      },
     ),
 
    GoRoute(
       path: AppRoutes.addTransaction,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
 
         final extra = state.extra;
 
-        if (extra is TransactionModel) {
-          return AddTransactionScreen(
+        final screen = extra is TransactionModel
+        ? AddTransactionScreen(
             type: extra.type,
             transaction: extra,
+          )
+        : AddTransactionScreen(
+            type: extra as TransactionType? ?? TransactionType.expense,
           );
-        }
 
-        return AddTransactionScreen(
-          type: extra as TransactionType,
+        return AppPageBuilder.fade(
+          child: screen,
         );
       },
     ),
 
     GoRoute(
       path: AppRoutes.transactionHistory,
-      builder: (context, state) =>
-          const TransactionHistoryScreen(),
+      pageBuilder: (context, state) {
+        return AppPageBuilder.fade(
+          child: const TransactionHistoryScreen(),
+        );
+      },
     ),
 
     GoRoute(
       path: AppRoutes.categories,
-      builder: (context, state) => const CategoryScreen(),
+      pageBuilder: (context, state) {
+        return AppPageBuilder.fade(
+          child: const CategoryScreen(),
+        );
+      },
     ),
 
     GoRoute(
       path: AppRoutes.statistics,
-      builder: (context, state) => const StatisticsScreen(),
+      pageBuilder: (context, state) {
+        return AppPageBuilder.fade(
+          child: const StatisticsScreen(),
+        );
+      },
     ),
 
     GoRoute(
       path: AppRoutes.settings,
-      builder: (context, state) => const SettingsScreen(),
+      pageBuilder: (context, state) {
+        return AppPageBuilder.fade(
+          child: const SettingsScreen(),
+        );
+      },
     ),
 
     GoRoute(
       path: AppRoutes.about,
-      builder: (context, state) => const AboutScreen(),
+      pageBuilder: (context, state) {
+        return AppPageBuilder.fade(
+          child: const AboutScreen(),
+        );
+      },
     ),
   ],
 );

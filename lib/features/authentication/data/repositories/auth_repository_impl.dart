@@ -1,6 +1,10 @@
 import 'package:expense_iq/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Implementation of authentication repository using Supabase.
+///
+/// Handles user authentication operations such as registration,
+/// login, logout, and checking the current authentication state.
 class AuthRepositoryImpl implements AuthRepository{
 
   final SupabaseClient supabase;

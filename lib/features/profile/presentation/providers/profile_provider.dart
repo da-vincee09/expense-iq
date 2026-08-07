@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
+/// Manages user profile state and business logic.
+///
+/// Handles loading profile data, updating user information,
+/// and uploading profile images while maintaining UI state.
 class ProfileProvider extends ChangeNotifier {
   final ProfileRepository _repository;
 
@@ -34,8 +38,7 @@ class ProfileProvider extends ChangeNotifier {
     try {
       final imageFile = File(pickedFile.path);
 
-      final imageUrl =
-          await _repository.uploadProfileImage(imageFile);
+      final imageUrl = await _repository.uploadProfileImage(imageFile);
 
       await _repository.updateProfileImage(imageUrl);
 

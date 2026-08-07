@@ -9,6 +9,10 @@ import 'package:expense_iq/features/transactions/presentation/widgets/transactio
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Displays the user's transaction history.
+///
+/// Provides transaction search, filtering options,
+/// and a list of recorded income and expense transactions.
 class TransactionHistoryScreen extends StatefulWidget {
   const TransactionHistoryScreen({super.key});
 
@@ -29,7 +33,6 @@ class _TransactionHistoryScreenState
       await context.read<CategoryProvider>().loadCategories();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
