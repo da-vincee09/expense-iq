@@ -1,6 +1,3 @@
-Here is the complete `README.md` content in Markdown format:
-
-````markdown
 # 💰 ExpenseIQ
 
 **Track. Manage. Understand.**
@@ -274,4 +271,3 @@ Possible future features:
 ## 📄 License
 
 This project was created for educational and portfolio purposes.
-````
