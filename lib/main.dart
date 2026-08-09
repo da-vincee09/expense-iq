@@ -30,6 +30,9 @@ Future<void> main() async {
     publishableKey: SupabaseConfig.publishableKey,
   );
 
+  final themeProvider = ThemeProvider();
+  await themeProvider.loadTheme();
+
   runApp(
     MultiProvider(
       providers: [
@@ -81,8 +84,8 @@ Future<void> main() async {
           ),
         ),
 
-        ChangeNotifierProvider(
-          create: (_) => ThemeProvider(),
+        ChangeNotifierProvider.value(
+          value:ThemeProvider(),
         )
       ],
       child: const MyApp(),
