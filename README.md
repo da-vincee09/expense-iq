@@ -198,7 +198,9 @@ flutter pub get
 
 ### 4. Configure Supabase
 
-Update your Supabase credentials inside:
+Create a Supabase project and configure the required credentials.
+
+Update:
 
 ```text
 lib/core/constants/supabase_config.dart
@@ -212,6 +214,8 @@ class SupabaseConfig {
   static const publishableKey = "YOUR_SUPABASE_KEY";
 }
 ```
+
+⚠️ Do not commit private credentials or secret keys to the repository
 
 ### 5. Run the application
 
