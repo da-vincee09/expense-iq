@@ -10,18 +10,36 @@ The project demonstrates clean Flutter architecture using the **Provider state m
 
 ## 📱 Features
 
+### 💰 Financial Management
+
 - 💵 Track income and expense transactions
 - ➕ Add new financial transactions
 - ✏️ Edit existing transactions
 - 🗑️ Delete transactions
+- 💰 View total income, expenses, and remaining budget
+- 📈 Monitor monthly budget progress
+
+### 🔎 Organization
+
 - 🔍 Search transactions by title
 - 🏷️ Filter transactions by category and type
 - 📂 Create and manage transaction categories
+
+### 📊 Insights
+
 - 📊 View financial statistics and expense breakdowns
-- 📈 Monitor monthly budget progress
+
+### 👤 Profile
+
 - 👤 Manage user profile information
 - 🖼️ Upload and update profile images
+
+### 🔐 Authentication
+
 - 🔐 User authentication with Supabase
+
+### 🎨 User Experience
+
 - 🌙 Light and dark theme support
 - 🧭 Smooth navigation using GoRouter
 - ⚡ Loading, empty, and error state handling
