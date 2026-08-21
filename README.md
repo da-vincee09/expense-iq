@@ -272,6 +272,20 @@ Possible future features:
 
 ---
 
+## 🔐 Security
+
+ExpenseIQ uses Supabase Authentication to manage user accounts and secure access to financial data.
+
+### Security Practices
+
+- Authentication is handled through Supabase Auth.
+- User-specific data is associated with the authenticated user's ID.
+- Supabase Row Level Security (RLS) should be enabled for database tables.
+- Private credentials and secret keys should never be committed to the repository.
+- The application should only use publishable Supabase credentials on the client.
+
+---
+
 ## 📄 License
 
 This project was created for educational and portfolio purposes.
